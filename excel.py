@@ -54,7 +54,7 @@ class Interface:
 ########################################################################################
     def run(self):
         ########################################################################################
-        login_page = "http://10.0.53.71:8081/login"#尝试登录api获取jessionid，失败退出
+        login_page = "http://00.0.00.00:8081/login"#尝试登录api获取jessionid，失败退出
         try:
             import urllib2
             import urllib
@@ -77,13 +77,13 @@ class Interface:
             regex = re.compile(r'Cookie JSESSIONID=(.+) for')
             jsessionid = regex.search(str(cookie))
             if '"code":200' in data:
-                print "http://10.0.53.71:8081/api/ 登录成功"
+                print "http://00.0.00.00/api/ 登录成功"
                 self.writeCookie(jsessionid.group(1))
             else:
-                print "http://10.0.53.71:8081/api/ 用户密码错误"
+                print "http://00.0.00.00/api/ 用户密码错误"
                 os._exit(0)
         except Exception,e:
-            print "http://10.0.53.71:8081/api/ 登录失败 : " + str(e) 
+            print "http://00.0.00.00/api/ 登录失败 : " + str(e) 
             os._exit(0)
         ################################################################################
          # 打开xls文件
@@ -108,35 +108,34 @@ class Interface:
             API = line[title.index('API')]#API
             API.lstrip()
 
-            user = API.split('.')#分割lj.a.b.c
+            user = API.split('.')#分割
 
             description = '"' + line[title.index('description')].lstrip() + '"'
             method = line[title.index('method')].lstrip()
             #user = user[2]
-        ########################################################################################判断接口user是司机还是乘客允许对应脚本
-        #接口名字看不出是司机还是乘客登录的接口,请在isLogin设置,2代表乘客登录,3代表司机登录
+        ########################################################################################
             try:
                 if (line[title.index('isLogin')] == 1 and user.count('p')-user.count('d')):#
-                    if (user.count('p')):#乘客登录
+                    if (user.count('p')):#
                         os.system("python passislogin.py " + API + " " + method + " " + description + " " + self.Package)
-                    elif (user.count('d')):#司机登录
+                    elif (user.count('d')):#
                         os.system("python drivislogin.py " + API + " " + method + " " + description + " " + self.Package)
                     else:
                         sys.stdout.write(color.UseStyle(API + ' failed1: ', mode = 'bold', fore = 'blue'))
-                        print "不知道是司机还是乘客登录,是否司机乘客都适用该接口!"
-                elif (line[title.index('isLogin')] > 1):#2代表乘客登录,3代表司机登录
-                    if (line[title.index('isLogin')] == 2):#乘客登录
+                        print "!"
+                elif (line[title.index('isLogin')] > 1):#2
+                    if (line[title.index('isLogin')] == 2):#
                         os.system("python passislogin.py " + API + " " + method + " " + description + " " + self.Package)
-                    elif (line[title.index('isLogin')] == 3):#司机登录
+                    elif (line[title.index('isLogin')] == 3):#
                         os.system("python drivislogin.py " + API + " " + method + " " + description + " " + self.Package)
                     else:
                         sys.stdout.write(color.UseStyle(API + ' failed2: ', mode = 'bold', fore = 'blue'))
-                        print "不知道是司机还是乘客登录,请在isLogin设置,2代表乘客登录,3代表司机登录!"
+                        print "!"
                 elif (line[title.index('isLogin')] == 0):#
                     os.system("python nouserlogin.py " + API + " " + method + " " + description + " " + self.Package)
                 else :
                     sys.stdout.write(color.UseStyle(API + ' failed3: ', mode = 'bold', fore = 'blue'))
-                    print "不知道是司机还是乘客登录,是否司机乘客都适用该接口!"
+                    print "!"
             except Exception, e:
                 sys.stdout.write(color.UseStyle(API + ' failed4: ', mode = 'bold', fore = 'blue'))
                 print str(e)

@@ -12,55 +12,23 @@ Package = sys.argv[-1]
 Filename = "./Template/" + Package + "/" + Classname + ".java"
 Description = sys.argv[3]
 
-#print 'http://10.0.53.71:8081/api/index?keywords=' + Apiname + '&product=0&class1=0'
+#print 'http://00.0.00.00:8081/api/index?keywords=' + Apiname + '&product=0&class1=0'
 Parameter = login.html('http://10.0.53.71:8081/api/index?keywords=' + Apiname + '&product=0&class1=0')
-#http://10.0.53.71:8081/api/index?keywords=lj.bi.submitLog&product=0&class1=0
 #print Apiname + " :" + Classname
 #print Parameter
 
 if not Parameter==False :
     lj = open(Filename,'w')
-    text = '''package user.http.%s;
-
-import com.kuaidadi.framework.rpc.RpcCode;
-import com.liangJian.test.kopUtils.KopBaseCase;
-import net.sf.json.JSONObject;
-import org.junit.Assert;
-import org.junit.Test;
-
-import java.util.HashMap;
-import java.util.Map;
+    text = '''%s;
 
 /**
  * %s
  */
-public class %s extends KopBaseCase {
-
+public class %s {
     //private static final Log logger = LogFactory.getLog(%s.class);
 
-    @Test
-    public void testNormal() {
-        String res = getBizMapAndPlatMapAndDoPost("%s");
-        Map<String, Object> resMap = (Map<String, Object>)(JSONObject.fromObject(res));
-        Map<String, Object> dataMap = (Map<String,Object>)resMap.get("data");
-        Assert.assertEquals(RpcCode.SUCCESS, ((Integer)resMap.get("code")).intValue());
-        Assert.assertNotNull(dataMap);
-        //Assert.assertFalse(dataMap.get("driverRegisterResult").toString().isEmpty());
-    }
+        String res = getBizMapAndPlatMapAndDoPost("%s", passLogin.passId, passLogin.passToken, 1);
 
-    /**赋值业务参数
-     * 赋值完整的平台参数
-     * 使用完整的业务参数和平台参数发起post请求*/
-    private String getBizMapAndPlatMapAndDoPost(String apiName) {
-        Map<String, Object> bizParamMap = createBusiParamMap();
-        //System.out.println("=====bizParamMap======"+JsonUtil.toJson(bizParamMap));
-        Map<String, Object> wholeplatParamMap = getWholePlatParam(apiName);
-        //System.out.println("=====wholeplatParamMap======"+JsonUtil.toJson(wholeplatParamMap));
-        return doPostWithBizMapAndSpecialPlatMap(bizParamMap, wholeplatParamMap);
-    }
-
-    private Map<String, Object> createBusiParamMap() {
-        Map<String, Object> map = new HashMap<String, Object>();
 ''' % (Package, Description, Classname, Classname, Apiname)
     #####################################################################################
     parame = ''
