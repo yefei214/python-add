@@ -12,7 +12,7 @@ Package = sys.argv[-1]
 Filename = "./Template/" + Package + "/" + Classname + ".java"
 Description = sys.argv[3]
 
-Parameter = login.html('http://00.0.00.00:8081/api/index?keywords=' + Apiname + '&product=0&class1=0')
+Parameter = login.html('http://00.0.00.00:0000/000/iuiu?iui=' + Apiname + '&product=0&class1=0')
 #print Apiname + " :" + Classname
 #print Parameter
 if not Parameter==False :
